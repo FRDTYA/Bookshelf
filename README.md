@@ -64,6 +64,6 @@ Bookshelf dikembangkan oleh Fachrio Raditya.
 
 ## Kontak
 
-Jika Anda memiliki pertanyaan atau masalah terkait dengan Tracker Coffee, silakan hubungi Fachrio Raditya melalui email di fachrio.raditya@gmail.com.
+Jika Anda memiliki pertanyaan atau masalah terkait dengan Bookshelf, silakan hubungi Fachrio Raditya melalui email di fachrio.raditya@gmail.com.
 
 Terima kasih telah menggunakan dan berkunjung di Bookshelf.
