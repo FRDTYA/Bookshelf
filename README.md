@@ -46,7 +46,7 @@ $dbname = "frbooks"; // nama database
 
 ```user
 // User Akun
-Username : user
+Username : user123
 Password : 123
 ```
 
