@@ -1,0 +1,521 @@
+@import url('components.css');
+
+:root {
+    --purple: #8e44ad;
+    --red: #c0392b;
+    --orange: #f39c12;
+    --black: #333;
+    --white: #fff;
+    --navy: #026773;
+    --light-color: #666;
+    --light-white: #ccc;
+    --light-bg: #f5f5f5;
+    --border: .1rem solid var(--black);
+    --box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1);
+}
+
+.add-products form {
+    max-width: 70rem;
+    border-radius: .5rem;
+    padding: 2rem;
+    margin: 0 auto;
+    background-color: var(--white);
+    box-shadow: var(--box-shadow);
+    border: var(--border);
+    text-align: center;
+}
+
+.add-products form h3 {
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    color: var(--black);
+    margin-bottom: 1.5rem;
+}
+
+.add-products form .flex {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.add-products form .flex .inputBox {
+    width: 49%;
+}
+
+.add-products form .box {
+    width: 100%;
+    margin: 1rem 0;
+    padding: 1.2rem 1.4rem;
+    font-size: 1.8rem;
+    color: var(--black);
+    border-radius: .5rem;
+    background-color: var(--light-bg);
+    border: var(--border);
+}
+
+.add-products form textarea {
+    height: 20rem;
+    resize: none;
+}
+
+.show-products .box-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 26.5rem);
+    justify-content: center;
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: flex-start;
+}
+
+.show-products {
+    padding-top: 0;
+}
+
+.show-products .box-container .box {
+    text-align: center;
+    padding: 2rem;
+    border-radius: .5rem;
+    border: var(--border);
+    box-shadow: var(--box-shadow);
+    background-color: var(--white);
+}
+
+.show-products .box-container .box img {
+    height: 25rem;
+}
+
+.show-products .box-container .box .name {
+    text-align: left;
+    margin-top: 1rem;
+    margin-left: 0.5rem;
+    padding: 0.3rem 0;
+    font-size: 2rem;
+    color: var(--black);
+}
+
+.show-products .box-container .box .writer {
+    margin-bottom: 0.5rem;
+    padding: 0 0.5rem;
+    text-align: left;
+    font-size: 1.7rem;
+    color: var(--light-color);
+}
+
+.show-products .box-container .box .price {
+    padding: 0.5rem 0;
+    font-size: 2.2rem;
+    color: var(--navy);
+}
+
+.edit-product-form {
+    min-height: 100vh;
+    background-color: rgba(0, 0, 0, .7);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem;
+    overflow-y: scroll;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1200;
+    width: 100%;
+}
+
+.edit-product-form form {
+    max-width: 70rem;
+    /* max-height: 65rem; */
+    border-radius: .5rem;
+    padding: 2rem;
+    margin: 0 auto;
+    background-color: var(--white);
+    box-shadow: var(--box-shadow);
+    border: var(--border);
+    text-align: center;
+}
+
+.edit-product-form form img {
+    height: 19rem;
+    margin-bottom: 1rem;
+}
+
+.edit-product-form form h3 {
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    color: var(--black);
+    margin-bottom: 1.5rem;
+}
+
+.edit-product-form form .flex {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.edit-product-form form .flex .inputBox {
+    width: 49%;
+}
+
+.edit-product-form form .box {
+    width: 100%;
+    margin: 0.5rem 0;
+    padding: 1rem 1.4rem;
+    font-size: 1.8rem;
+    color: var(--black);
+    border-radius: .5rem;
+    background-color: var(--light-bg);
+    border: var(--border);
+}
+
+.edit-product-form form textarea {
+    height: 8.5rem;
+    resize: none;
+}
+
+/* .edit-product-form{
+    min-height: 100vh;
+    background-color: rgba(0,0,0,.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    overflow-y: scroll;
+    position: fixed;
+    top: 0; left: 0;
+    z-index: 1200;
+    width: 100%;
+}
+
+.edit-product-form form{
+    width: 50rem;
+    padding: 2rem;
+    text-align: center;
+    border-radius: .5rem;
+    background-color: var(--white);
+}
+
+.edit-product-form form img{
+    height: 25rem;
+    margin-bottom: 1rem;
+}
+
+.edit-product-form form .box{
+    margin: 1rem 0;
+    padding: 1.2rem 1.4rem;
+    border: var(--border);
+    border-radius: .5rem;
+    background-color: var(--light-bg);
+    font-size: 1.8rem;
+    color: var(--black);
+    width: 100%;
+} */
+
+.placed-orders .box-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 33rem);
+    justify-content: center;
+    gap: 1.5rem;
+    align-items: flex-start;
+}
+
+.placed-orders .box-container .box {
+    /* text-align: center; */
+    
+    padding: 2rem;
+    border-radius: .5rem;
+    border: var(--border);
+    box-shadow: var(--box-shadow);
+    background-color: var(--white);
+}
+
+.placed-orders .box-container .box p {
+    margin-bottom: 1rem;
+    line-height: 1.5;
+    font-size: 2rem;
+    color: var(--white);
+}
+
+.placed-orders .box-container .box p span {
+    color: var(--black);
+}
+
+.placed-orders .box-container .box .drop-down {
+    width: 100%;
+    padding: 1.2rem 1.4rem;
+    font-size: 1.8rem;
+    border: var(--border);
+    border-radius: .5rem;
+    background-color: var(--light-bg);
+    margin-bottom: .5rem;
+}
+
+.placed-orders .box-container .box img {
+    margin-top: .5rem;
+    height: 20rem;
+    width: 50%;
+}
+
+.placed-orders .box-container .box a {
+    box-shadow: var(--box-shadow);
+}
+
+.placed-orders .box-container .box .flex-btn {
+    /* border: var(--border); */
+    box-shadow: var(--box-shadow);
+}
+
+.placed-orders .box-container .box.pending {
+    background-color: rgba(255, 0, 0, 0.5);
+    border: var(--border);
+    box-shadow: var(--box-shadow);
+}
+
+.placed-orders .box-container .box.completed {
+    background-color: var(--white);
+    border: var(--border);
+    box-shadow: var(--box-shadow);
+}
+
+.placed-orders .box-container .box.completed p {
+    color: var(--black);
+}
+
+.placed-orders .box-container .box.completed span {
+    color: var(--navy);
+}
+.placed-orders .box-container .box.completed span.aktif {
+    color: var(--white);
+}
+
+/* .user-accounts form {
+    max-width: 40rem;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    border-radius: .5rem;
+    padding: .5rem;
+    margin: 2rem auto;
+    background-color: var(--white);
+    box-shadow: var(--box-shadow);
+    border: var(--border);
+    text-align: center;
+}
+
+.user-accounts form .filter {
+    font-size: 2rem;
+} */
+
+.user-accounts .box-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 33rem);
+    justify-content: center;
+    gap: 1.5rem;
+    align-items: flex-start;
+}
+
+.user-accounts .box-container .box {
+    padding: 2rem;
+    border-radius: .5rem;
+    border: var(--border);
+    box-shadow: var(--box-shadow);
+    background-color: var(--white);
+    text-align: center;
+}
+
+.user-accounts .box-container .box img {
+    height: 15rem;
+    width: 15rem;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+}
+
+.user-accounts .box-container .box p {
+    line-height: 1.5;
+    padding: .5rem 0;
+    font-size: 2rem;
+    color: var(--light-color);
+}
+
+.user-accounts .box-container .box p span {
+    color: var(--navy);
+}
+
+.messages .box-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 33rem);
+    justify-content: center;
+    gap: 1.5rem;
+    align-items: flex-start;
+}
+
+.messages .box-container .box {
+    padding: 2rem;
+    border-radius: .5rem;
+    border: var(--border);
+    box-shadow: var(--box-shadow);
+    background-color: var(--white);
+}
+
+.messages .box-container .box p {
+    line-height: 1.3;
+    padding: .5rem 0;
+    font-size: 2rem;
+    color: var(--light-color);
+}
+
+.messages .box-container .box p span {
+    color: var(--navy);
+}
+
+.search-box {
+    /* background-color: red; */
+    display: flex;
+    margin: auto auto;
+    justify-content: center;
+    width: 97%;
+    margin: 20px;
+}
+
+.search-box input[type="text"] {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 50%;
+}
+
+.search-box i {
+    position: relative;
+    /* margin: 0; */
+    right: 45px;
+    top: 8px;
+    color: #aaa;
+    font-size: 15px;
+    /* background-color: red; */
+}
+
+.search-filter-container {
+    /* background-color: red; */
+    display: flex;
+    /* justify-content: space-between; */
+    align-items: center;
+    width: 100%;
+}
+
+.search-filter-container .search-box {
+    margin: 8px auto;
+    width: 30%;
+    position: relative;
+}
+
+.search-filter-container .search-box input {
+    width: 100%;
+    padding: 10px 15px;
+    padding-right: 45px;
+    margin: auto;
+    margin-left: -110px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.search-filter-container .search-box i {
+    /* background-color: pink; */
+    position: absolute;
+    top: 50%;
+    right: 130px;
+    transform: translateY(-50%);
+    color: #aaa;
+    font-size: 20px;
+}
+
+.search-filter-container .filter-form {
+    flex-basis: 30%;
+}
+
+.search-filter-container .filter-form select {
+    width: 62%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+
+
+
+
+
+
+
+
+
+/* media queries */
+/* @media screen and (max-width: 820px) {
+    .search-filter-container .search-box {
+        flex-basis: 70%;
+        margin-bottom: 15px;
+    }
+    .search-filter-container .search-box input{
+        width: 65%;
+    }
+} */
+
+
+@media (max-width:767px) {
+    .add-products form .flex .inputBox {
+        width: 100%;
+    }
+
+    .edit-product-form form .flex .inputBox {
+        width: 100%;
+    }
+
+    /* .user-accounts form{
+        max-width: 40rem;
+    } */
+
+    .search-filter-container {
+        flex-wrap: wrap;
+    }
+
+    .search-filter-container .search-box,
+    .search-filter-container .filter-form {
+        flex-basis: 85%;
+        padding: 10px;
+        margin: auto;
+    }
+
+    .search-box input[type="text"] {
+        width: 70%;
+    }
+
+    .search-filter-container .search-box input {
+        width: 100%;
+        margin: auto;
+    }
+
+    .search-filter-container .filter-form select {
+        width: 100%;
+    }
+
+    .search-filter-container .search-box i {
+        right: 30px;
+    }
+
+
+
+}
+
+@media (max-width:450px) {
+    .placed-orders .box-container {
+        grid-template-columns: 1fr;
+    }
+
+    .user-accounts .box-container {
+        grid-template-columns: 1fr;
+    }
+}

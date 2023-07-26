@@ -1,0 +1,230 @@
+@import url('https://fonts.googleapis.com/css?family-Poppins:200,300,400,500,600,700,800,900&display=swap');
+
+:root{
+    --purple:#8e44ad;
+    --red:#c0392b;
+    --orange:#f39c12;
+    --black:#333;
+    --white:#fff;
+    --navy:#026773;
+    --light-color:#666;
+    --light-white:#ccc;
+    --light-bg:#f5f5f5;
+    --border:.1rem solid var(--black);
+    --box-shadow:0 .5rem 1rem rgba(0,0,0,.1);
+}
+
+*{
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+    border: none;
+    text-decoration: none;
+    transition: all .2s linear;
+}
+html{
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
+}
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #2e86de;
+    transition: 0.5s;
+}
+
+.message{
+    position:fixed;
+    top: 10px;
+    margin: 0 auto;
+    height: 1vh;
+    width: 62vh;
+    max-width: 1200px;
+    background-color: var(--light-bg);
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 10000;
+    gap: 2rem;
+    
+}
+
+.message span{
+    font-size: 1.5rem;
+    color: var(--black);
+}
+
+.message i{
+    cursor: pointer;
+    color: var(--red);
+    font-size: 2rem;
+}
+
+.message i:hover{
+    transform: rotate(90deg);
+}
+
+.login{
+    position: relative;
+    padding: 50px;
+    background: #fff;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.1);
+}
+
+.login i{
+    position: absolute;
+    font-size: 1.5em;
+    color: #2e86de;
+    transition: 0.5s;
+}
+.login h2{
+    position: relative;
+    line-height: 0.2em;
+    top: 10px;
+    padding-left: 25px;
+    transition: 0.5s;
+    font-weight: 500;
+}
+.login .logo{
+    position: relative;
+    padding-left: 1px;
+    font-weight: 500;
+    font-size: 1.6em;
+    color: #2e86de;
+    transition: 0.5s;
+}
+
+.login .inputBox{
+    position: relative;
+}
+.login .inputBox input{
+    position: relative;
+    width: 100%;
+    padding: 10px 15px;
+    outline: none;
+    border: 2px solid #555;
+    font-size: 1em;
+    color: #333;
+}
+.login .inputPass{
+    position: relative;
+}
+.login .inputPass input{
+    position: relative;
+    width: 100%;
+    padding: 10px 15px;
+    padding-right: 13%;
+    outline: none;
+    /* border: none; */
+    border: 2px solid #555;
+    font-size: 1em;
+    color: #333;
+}
+.login .inputBox input#btn{
+    border: none;
+    background: #2e86de;
+    color: #fff;
+    transition: 0.5s;
+    font-size: 1.1em;
+    font-weight: 500;
+    cursor: pointer;
+}
+.login .group{
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+.login .group a{
+    color: #333;
+    text-decoration: none;
+}
+.login .group{
+    font-weight: 500;
+    text-decoration: underline;
+}
+
+.colors{
+    position: absolute;
+    right: 0;
+    padding: 10px;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.colors span{
+    position: relative;
+    width: 20px;
+    height: 20px;
+    background: var(--clr);
+    margin: 10px 8px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.colors span.active{
+    border: 2px solid #333;
+    scale: 1.5;
+}
+
+.input__icon-wrapper,
+.input_icon-wrapper {
+	position: absolute;
+	top: 25%;
+	right: 35px;
+	transform: translateY(-50%);
+	cursor: pointer;
+}
+.input__icon,
+.input_icon {
+	color: #999;
+	font-size: 24px;
+}
+.input__icon:hover,
+.input_icon:hover {
+	color: #333;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* media queries */
+@media (max-width: 420px){
+
+    .colors{
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        padding: 10px;
+        background: #fff;
+        display: flex;
+        flex-flow: row;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
+    }
+
+    .login{
+        width: 100%;
+    }
+
+}
