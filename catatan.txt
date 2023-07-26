@@ -1,0 +1,1832 @@
+
+<?php
+include('koneksi.php');
+$username = $_POST['username'];
+$password = $_POST['password'];
+
+$sql = "select * from tb_user where username = '$username' and password = '$password'";
+$result = mysqli_query($mysql, $sql);
+$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+
+if ($row['level'] == 1) {
+    echo "<meta http-equiv=refresh content=0;URL='index.php'>";
+} 
+else if ($row['level'] >= 2) {
+    echo "<meta http-equiv=refresh content=0;URL='index.php'>";
+} else {
+    echo "<script>alert('Username/Password salah');window.location='index.php'</script>";
+}
+?>
+
+
+
+
+
+
+
+<!---- Dibawah ini PHP untuk Signup OLD ----->
+
+<?php
+include('koneksi.php');
+if (isset($_POST["submit"])) {
+    $username = $_POST["username"];
+    $email = $_POST["email"];
+    $password = $_POST["password"];
+    $cpassword = $_POST["cpassword"];
+    $level = "2";
+    $duplicate = mysqli_query($conn, "SELECT * FROM tb_user WHERE username = '$username' OR email = '$email'");
+    if (mysqli_num_rows($duplicate) > 0) {
+        echo "<script> alert('Username or Email Has Already Taken'); </script>";
+    } else {
+        if ($password != $cpassword) {
+            echo "<script>alert('Password does not match');</script>";
+        } else {
+            $query = "INSERT INTO tb_user VALUES ('','$username','$email','$password','$level')";
+            mysqli_query($conn, $query);
+            echo "<script> alert('Registration Successfull'); </script>";
+            header('location:index.php');
+        }
+    }
+}
+?>
+
+
+
+
+
+
+
+
+
+<!---- Dibawah ini PHP untuk Signin OLD ----->
+
+<?php
+include('koneksi.php');
+
+if (isset($_POST["submit"])) {
+    $username = $_POST["username"];
+    $email = $_POST["email"];
+    $password = $_POST["password"];
+    $level = "2";
+    $duplicate = mysqli_query($conn, "SELECT * FROM tb_user WHERE username = '$username' and password = '$password'");
+    
+
+    if (mysqli_num_rows($duplicate) > 0) {
+        $row = mysqli_fetch_array($duplicate);
+        if($row['level'] == '1'){
+            $_SESSION['1'] = $row['name'];
+            header('location:profile.html');
+        }
+        elseif($row['level'] == '2'){
+            $_SESSION['2'] = $row['name'];
+            header('location:home.html');
+        }
+    }
+    else{
+        echo "<script>alert('Username/Password salah');window.location='index.php'</script>";
+    } 
+}
+?>
+
+<?php
+include('koneksi.php');
+
+if (isset($_POST["submit"])) {
+    $name = mysqli_real_escape_string($conn, $_POST['username']);
+    $pass = mysqli_real_escape_string($conn, $_POST['password']);
+
+    $select_users = mysqli_query($conn, "SELECT * FROM `tb_user` WHERE username='$name' AND 
+    password='$pass' ") or die('query failed');
+
+    if (mysqli_num_rows($select_users) > 0) {
+
+        $row = mysqli_fetch_assoc($select_users);
+
+        if($row['level'] == '1'){
+            $_SESSION['1_username']= $row['username'];
+            $_SESSION['1_email']= $row['email'];
+            $_SESSION['1_id']= $row['id'];
+            header('location:admin_page.php');
+        }
+        
+    } elseif($row['level'] == '2'){
+        $_SESSION['2_username']= $row['username'];
+        $_SESSION['2_email']= $row['email'];
+        $_SESSION['2_id']= $row['id'];
+        header('location:home.html');
+    }
+}
+?>
+
+
+
+
+
+
+<!---- Home.php ----->
+<?php
+
+include('koneksi.php');
+session_start();
+
+$user_id = $_SESSION['user_id'];
+
+if(!isset($user_id)){
+    header('location:index.php');
+}
+
+?>
+
+
+
+
+
+
+<!---- di admin_page.php ----->
+while($fetch_pendings = mysqli_fetch_assoc($select_pendings)){
+                $total_price = $fetch_pendings['total_price'];
+                $total_pendings += $total_price;
+            
+            };
+
+
+
+
+
+
+<!---- letaknya di admin_product.php line 133 ----->
+<div id="price" class="price">Rp<?php echo $fetch_products['price']; ?>/-</div>
+
+
+
+
+
+
+
+
+<!---- header admin_header.php ----->
+
+<header class="header">
+
+    <div class="flex">
+
+        <a href="admin_page.php" class="logo">Admin<span>Panel</span></a>
+
+        <nav class="navbar">
+            <a href="admin_page.php">Home</a>
+            <a href="admin_products.php">Products</a>
+            <a href="admin_orders.php">Orders</a>
+            <a href="admin_users.php">Users</a>
+            <a href="admin_contacts.php">Messages</a>
+        </nav>
+
+        <div class="icons">
+            <div id="menu-btn" class="fas fa-bars"></div>
+            <div id="user-btn" class="fas fa-user"></div>
+        </div>
+
+        <div class="account-box">
+            <p>Username : <span><?php echo $_SESSION['admin_name']; ?></span></p>
+            <p>Email : <span><?php echo $_SESSION['admin_email']; ?></span></p>
+            <a href="logout.php" class="delete-btn" >logout</a>
+        </div>
+
+    </div>
+
+</header>
+
+
+
+
+
+
+<!---- koneksi.php PDO ----->
+
+<?php
+
+$db_name = "mysql:host=localhost;dbname=frbooks";
+$username = "root";
+$password = "";
+
+$conn = new PDO($db_name, $username, $password);
+
+?>
+
+
+
+
+
+
+<!---- koneksi.php mysqli ----->
+<?php
+// Konfigurasi database
+$host = 'localhost';
+$dbname = 'frbooks';
+$username = 'root';
+$password = '';
+
+// Koneksi dengan PDO
+try {
+  $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+//   echo "Koneksi berhasil dengan PDO";
+} catch(PDOException $e) {
+  echo "Koneksi gagal dengan PDO: " . $e->getMessage();
+}
+
+// Koneksi dengan MySQLi
+$conn_mysqli = mysqli_connect($host, $username, $password, $dbname);
+if (!$conn_mysqli) {
+  die("Koneksi gagal dengan MySQLi: " . mysqli_connect_error());
+} else {
+//   echo "Koneksi berhasil dengan MySQLi";
+}
+?>
+
+
+
+
+
+
+
+
+<!---- signup.php mysqli ----->
+<?php
+include('koneksi.php');
+session_start();
+
+if (isset($_POST["submit"])) {
+    $name = mysqli_real_escape_string($conn, $_POST['name']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $pass = mysqli_real_escape_string($conn, $_POST['password']);
+    $cpass = mysqli_real_escape_string($conn, $_POST['cpassword']);
+    $user_type = 'user';
+
+    $image = $_FILES['image']['name'];
+    $image_size = $_FILES['image']['size'];
+    $image_tmp_name = $_FILES['image']['tmp_name'];
+    $image_folder = 'upload_img/' . $image;
+
+    $select_users = mysqli_query($conn, "SELECT * FROM `tb_user` WHERE email='$email' AND 
+    password='$pass' ") or die('query failed');
+
+    if (mysqli_num_rows($select_users) > 0) {
+        $message[] = 'user already exist!';
+    } else {
+        if ($pass != $cpass) {
+            $message[] = 'confirm password not matched';
+        } else {
+            $insert = mysqli_query($conn, "INSERT INTO `tb_user`(name, email, password, user_type, image) VALUES('$name','$email','$cpass','$user_type','$image')")
+                or die('query failed');
+
+            if ($insert) {
+                if ($image_size > 2000000) {
+                    $message[] = 'image size too large!';
+                } else {
+                    move_uploaded_file($image_tmp_name, $image_folder);
+                    $message[] = 'signup successfully';
+                }
+            }
+        }
+    }
+}
+?>
+
+
+
+
+
+
+
+<!---- index.php mysqli ----->
+<?php
+include('koneksi.php');
+session_start();
+
+if (isset($_POST["submit"])) {
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $pass = mysqli_real_escape_string($conn, $_POST['password']);
+
+    $select_users = mysqli_query($conn, "SELECT * FROM `tb_user` WHERE email='$email' AND 
+    password='$pass' ") or die('query failed');
+
+    if (mysqli_num_rows($select_users) > 0) {
+
+        $row = mysqli_fetch_assoc($select_users);
+
+        if ($row['user_type'] == 'admin') {
+            $_SESSION['admin_name'] = $row['name'];
+            $_SESSION['admin_email'] = $row['email'];
+            $_SESSION['admin_id'] = $row['id'];
+            header('location:admin_page.php');
+        } elseif ($row['user_type'] == 'user') {
+            $_SESSION['user_name'] = $row['name'];
+            $_SESSION['user_email'] = $row['email'];
+            $_SESSION['user_id'] = $row['id'];
+            header('location:home.php');
+        }
+    } else {
+        echo "<script>alert('Email/Password salah');window.location='index.php'</script>";
+    }
+}
+?>
+
+
+
+
+
+
+
+
+
+
+<!---- sistem PDO div=profile di admin_header.php ----->
+$select_profile = $conn->prepare("SELECT * FROM `tb_user` WHERE id
+            = ?");
+            $select_profile->execute([$admin_id]);
+            $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
+
+
+
+
+
+<!---- home.php html navbar old ----->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>FRbooks</title>
+</head>
+
+<body>
+    <header>
+        <a href="#" class="logo">FRbooks</a>
+        <ul class="navigation">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Shop</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </header>
+    <section class="banner"></section>
+    <script>
+        window.addEventListener("scroll", function(){
+            const header = document.querySelector("header");
+            header.classList.toggle("sticky", window.scrollY > 0);
+        });
+    </script>
+</body>
+
+</html>
+
+
+
+
+
+
+<!---- style.css untuk home.php navbar old ----->
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: #000;
+    min-height: 200vh;
+}
+
+section{
+    padding: 3rem 2rem;
+}
+
+.message{
+    position:sticky;
+    top: 20px;
+    margin: 0 auto;
+    max-width: 1200px;
+    background-color: var(--light-bg);
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 10000;
+    gap: 1.5rem;
+    
+}
+
+.message span{
+    font-size: 2rem;
+    color: var(--black);
+}
+
+.message i{
+    cursor: pointer;
+    color: var(--red);
+    font-size: 2.5rem;
+}
+
+.message i:hover{
+    transform: rotate(90deg);
+}
+
+.btn,
+.option-btn,
+.delete-btn,
+.white-btn{
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 1rem 3rem;
+    cursor: pointer;
+    color: var(--white);
+    font-size: 1.8rem;
+    border-radius: .5rem;
+    text-transform: capitalize;
+}
+
+.btn:hover,
+.option-btn:hover,
+.delete-btn:hover{
+    background-color: var(--black);
+}
+
+.white-btn,
+.btn{
+    background-color: var(--purple);
+}
+
+.option-btn{
+    background-color: var(--orange);
+}
+
+.delete-btn{
+    background-color: var(--red);
+}
+
+@keyframes fadeIn{
+    0%{
+        transform: translateY(1rem);
+        opacity: .2s;
+    }
+    
+}
+
+.form-container{
+    min-height: 100vh;
+    background-color: var(--light-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.form-container form{
+    padding: 2rem;
+    width: 50rem;
+    border-radius: .5rem;
+    box-shadow: var(--box-shadow);
+    border: var(--border);
+    background-color: var(--white);
+    text-align: center;
+}
+
+.form-container form h3{
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    color: var(--black);
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.6s;
+    padding: 40px 100px;
+    z-index: 10000;
+}
+
+header.sticky {
+    padding: 10px 100px;
+    background: #fff;
+}
+
+header .navigation {
+    position: relative;
+    display: flex;
+}
+
+header .navigation li {
+    list-style: none;
+    margin-left: 30px;
+}
+
+header .navigation li a {
+    text-decoration: none;
+    color: #eaee0b;
+    font-weight: 300;
+}
+
+header .navigation li a:hover {
+    text-decoration: none;
+    color: #fa0101;
+    font-weight: 300;
+}
+
+header .logo {
+    position: relative;
+    font-weight: 700;
+    color: #d80505;
+    text-decoration: none;
+    font-size: 2em;
+}
+
+header.sticky {
+    background: #fff;
+    padding: 5px 100px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+}
+
+header.sticky .logo {
+    color: #000000;
+}
+
+header.sticky .logo:hover {
+    color: #d80505;
+}
+
+header.sticky .navigation li a {
+    color: #000000;
+    font-weight: 300;
+}
+
+header.sticky .navigation li a:hover {
+    color: #eaee0b;
+}
+
+.banner {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background: url(../image/library.jpg);
+    background-size: cover;
+}
+
+
+
+
+
+/* media queries */
+
+@media (max-width:991px){
+
+    html{
+        font-size: 55%;
+    }
+
+}
+
+@media (max-width:450px){
+
+    html{
+        font-size: 50%;
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!---- admmin_style.css old ----->
+:root{
+    --purple:#8e44ad;
+    --red:#c0392b;
+    --orange:#f39c12;
+    --black:#333;
+    --white:#fff;
+    --navy:#026773;
+    --light-color:#666;
+    --light-white:#ccc;
+    --light-bg:#f5f5f5;
+    --border:.1rem solid var(--black);
+    --box-shadow:0 .5rem 1rem rgba(0,0,0,.1);
+}
+
+*{
+    font-family: 'Rubik', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+    border: none;
+    text-decoration: none;
+    transition: all .2s linear;
+}
+
+*::selection{
+    background-color: var(--red);
+    color: var(--white);
+}
+
+*::-webkit-scrollbar{
+    height: .5rem;
+    width: 1rem;
+}
+
+*::-webkit-scrollbar-track{
+    background-color: transparent;
+}
+
+*::-webkit-scrollbar-thumb{
+    background-color: var(--navy);
+}
+html{
+    font-family: 'Poppins', sans-serif;
+    font-size: 62.5%;
+    overflow-x: hidden;
+}
+
+body{
+    background-color: var(--light-bg);
+}
+
+section{
+    padding: 3rem 2rem;
+}
+
+.title{
+    text-align: center;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    color: var(--navy);
+    font-size: 3rem;
+}
+
+.empty{
+    padding: 1.5rem;
+    text-align: center;
+    border: var(--border);
+    background-color: var(--white);
+    color: var(--red);
+    font-size: 2rem;
+}
+
+.message{
+    position:sticky;
+    top: 20px;
+    margin: 0 auto;
+    max-width: 1200px;
+    background-color: var(--light-bg);
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 10000;
+    gap: 1.5rem;
+    
+}
+
+.message span{
+    font-size: 2rem;
+    color: var(--black);
+}
+
+.message i{
+    cursor: pointer;
+    color: var(--red);
+    font-size: 2.5rem;
+}
+
+.message i:hover{
+    transform: rotate(90deg);
+}
+
+.btn,
+.option-btn,
+.delete-btn,
+.white-btn{
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 1rem 3rem;
+    cursor: pointer;
+    color: var(--white);
+    font-size: 1.8rem;
+    border-radius: .5rem;
+    text-transform: capitalize;
+}
+
+.btn:hover,
+.option-btn:hover,
+.delete-btn:hover{
+    background-color: var(--black);
+}
+
+.white-btn,
+.btn{
+    background-color: var(--purple);
+}
+
+.option-btn{
+    background-color: var(--orange);
+}
+
+.delete-btn{
+    background-color: var(--red);
+}
+
+@keyframes fadeIn{
+    0%{
+        transform: translateY(1rem);
+        opacity: .2s;
+    }
+    
+}
+
+.form-container{
+    min-height: 100vh;
+    background-color: var(--light-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.form-container form{
+    padding: 2rem;
+    width: 50rem;
+    border-radius: .5rem;
+    box-shadow: var(--box-shadow);
+    border: var(--border);
+    background-color: var(--white);
+    text-align: center;
+}
+
+.form-container form h3{
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    color: var(--black);
+}
+
+.header{
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: var(--white);
+    box-shadow: var(--box-shadow);
+}
+
+.header .flex{
+    display: flex;
+    align-items: center;
+    padding: 2rem;
+    justify-content: space-between;
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header .flex .logo{
+    font-size: 2.5rem;
+    color: var(--black);
+}
+
+.header .flex .logo span{
+    color: var(--navy);
+}
+
+.header .flex .navbar a{
+    margin: 0 1rem;
+    font-size: 2rem;
+    color: var(--black);
+}
+
+.header .flex .navbar a:hover{
+    color: var(--navy);
+}
+
+.header .flex .icons div{
+    margin-left: 1.5rem;
+    font-size: 2.5rem;
+    cursor: pointer;
+    color: var(--black);
+}
+
+.header .flex .icons div:hover{
+    color: var(--navy);
+}
+
+.header .flex .account-box{
+    position: absolute;
+    top: 120%;
+    right: 2rem;
+    width: 30rem;
+    box-shadow: var(--box-shadow);
+    border-radius: .5rem;
+    padding: 2rem;
+    text-align: center;
+    background-color: var(--white);
+    border-radius: .5rem;
+    border: var(--border);
+    display: none;
+    animation: fadeIn .2s linear;
+}
+
+.header .flex .account-box.active{
+    display: inline-block;
+}
+
+.header .flex .account-box p{
+    font-size: 2rem;
+    color: var(--black);
+    margin-bottom: 1.3rem;
+}
+.header .flex .account-box p span{
+    color: var(--navy);
+}
+
+.header .flex .account-box .delete-btn{
+    margin-top: 0;
+}
+
+#menu-btn{
+    display: none;
+}
+
+.dashboard .box-container{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: flex-start;
+}
+
+.dashboard .box-container .box{
+    border-radius: .5rem;
+    padding: 2rem;
+    background-color: var(--white);
+    box-shadow: var(--box-shadow);
+    border: var(--border);
+    text-align: center;
+}
+
+.dashboard .box-container .box h3{
+    font-size: 5rem;
+    color: var(--black);
+}
+
+.dashboard .box-container .box p{
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background-color: var(--light-bg);
+    color: var(--navy);
+    font-size: 2rem;
+    border: var(--border);
+    border-radius: .5rem;
+}
+
+.add-products form{
+    background-color: var(--white);
+    border-radius: .5rem;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: var(--box-shadow);
+    border: var(--border);
+    max-width: 50rem;
+    margin: 0 auto;
+}
+
+.add-products form h3{
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    color: var(--black);
+    margin-bottom: 1.5rem;
+}
+
+.add-products form .box{
+    width: 100%;
+    background-color: var(--light-bg);
+    border-radius: .5rem;
+    margin: 1rem 0;
+    padding: 1.2rem 1.4rem;
+    color: var(--black);
+    font-size: 1.8rem;
+    border: var(--border);
+    border-radius: .5rem;
+}
+
+.show-products .box-container{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 30rem);
+    justify-content: center;
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: flex-start;
+}
+
+.show-products{
+    padding-top: 0;
+}
+
+.show-products .box-container .box{
+    text-align: center;
+    padding: 2rem;
+    border-radius: .5rem;
+    border: var(--border);
+    box-shadow: var(--box-shadow);
+    background-color: var(--white);
+}
+
+.show-products .box-container .box img{
+    height: 30rem;
+}
+
+.show-products .box-container .box .name{
+    padding: 1rem 0;
+    font-size: 2rem;
+    color: var(--black);
+}
+
+.show-products .box-container .box .price{
+    padding: 1rem 0;
+    font-size: 2.5rem;
+    color: var(--navy);
+}
+
+.edit-product-form{
+    min-height: 100vh;
+    background-color: rgba(0,0,0,.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    overflow-y: scroll;
+    position: fixed;
+    top: 0; left: 0;
+    z-index: 1200;
+    width: 100%;
+}
+
+.edit-product-form form{
+    width: 50rem;
+    padding: 2rem;
+    text-align: center;
+    border-radius: .5rem;
+    background-color: var(--white);
+}
+
+.edit-product-form form img{
+    height: 25rem;
+    margin-bottom: 1rem;
+}
+
+.edit-product-form form .box{
+    margin: 1rem 0;
+    padding: 1.2rem 1.4rem;
+    border: var(--border);
+    border-radius: .5rem;
+    background-color: var(--light-bg);
+    font-size: 1.8rem;
+    color: var(--black);
+    width: 100%;
+}
+
+
+/* media queries */
+
+@media (max-width:991px){
+
+    html{
+        font-size: 55%;
+    }
+
+}
+
+@media (max-width:768px){
+    #menu-btn{
+        display: inline-block;
+    }
+
+    .header .flex .navbar{
+        position: absolute;
+        top: 99%; 
+        left: 0; 
+        right: 0;
+        background-color: var(--white);
+        border-top: var(--border);
+        border-bottom: var(--border);
+        clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+    }
+
+    .header .flex .navbar.active{
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+
+    .header .flex .navbar a{
+        margin: 2rem;
+        display: block;
+    }
+}
+
+@media (max-width:450px){
+
+    html{
+        font-size: 50%;
+    }
+
+    .title{
+        font-size: 3rem;
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!---- admmin_products.php old start line 12 ----->
+if (isset($_POST['add_product'])) {
+    $name = mysqli_real_escape_string($conn, $_POST['name']);
+    $price = $_POST['price'];
+    $price = $_POST['price'];
+    $image = $_FILES['image']['name'];
+    $image_size = $_FILES['image']['size'];
+    $image_tmp_name = $_FILES['image']['tmp_name'];
+    $image_folder = 'upload_img/' . $image;
+
+    $select_product_name = mysqli_query($conn, "SELECT name FROM `tb_products` WHERE name = '$name'")
+        or die('query failed');
+
+    if (mysqli_num_rows($select_product_name) > 0) {
+        $message[] = 'product name already added';
+    } else {
+        $add_product_query = mysqli_query($conn, "INSERT INTO `tb_products`(name, price, image) 
+        VALUES('$name', '$price', '$image')") or die('query failed');
+
+        if ($add_product_query) {
+            if ($image_size > 2000000) {
+                $message[] = 'image size too large';
+            } else {
+                move_uploaded_file($image_tmp_name, $image_folder);
+                $message[] = 'product added successfully!';
+            }
+        } else {
+            $message[] = 'product could not be added!';
+        }
+    }
+}
+
+if (isset($_GET['delete'])) {
+    $delete_id = $_GET['delete'];
+    $delete_image_query = mysqli_query($conn, "SELECT image FROM `tb_products`
+    WHERE id = '$delete_id'") or die('query failed');
+    $fetch_delete_image = mysqli_fetch_assoc($delete_image_query);
+    unlink('upload_img/' . $fetch_delete_image['image']);
+    mysqli_query($conn, "DELETE FROM `tb_products` WHERE id = '$delete_id'") or die('query failed');
+    header('location:admin_products.php');
+}
+
+if (isset($_POST['update_product'])) {
+    $update_p_id = $_POST['update_p_id'];
+    $update_name = $_POST['update_name'];
+    $update_price = $_POST['update_price'];
+
+    mysqli_query($conn, "UPDATE `tb_products` SET name = '$update_name',
+    price = '$update_price' WHERE id = '$update_p_id'") or die('query failed');
+
+    $update_image = $_FILES['update_image']['name'];
+    $update_image_tmp_name = $_FILES['update_image']['tmp_name'];
+    $update_image_size = $_FILES['update_image']['size'];
+    $update_folder = 'upload_img/' . $update_image;
+    $update_old_image = $_POST['update_old_image'];
+
+    if (!empty($update_image)) {
+        if ($update_image_size > 2000000) {
+            $message[] = 'image file size too large';
+        } else {
+            mysqli_query($conn, "UPDATE `tb_products` SET image = '$update_image'
+            WHERE id = '$update_p_id'") or die('query failed');
+            move_uploaded_file($update_image_tmp_name, $update_folder);
+            unlink('upload_img/' . $update_old_image);
+        }
+    }
+
+    header('location:admin_products.php');
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!---- admmin_products.php start line 64 ----->
+if (isset($_POST['update_product'])) {
+    $update_p_id = $_POST['update_p_id'];
+    $update_name = $_POST['update_name'];
+    $update_writer = $_POST['update_writer'];
+    $update_category = $_POST['update_category'];
+    $update_details = $_POST['update_details'];
+    $update_price = $_POST['update_price'];
+
+    mysqli_query($conn, "UPDATE `tb_products` SET name = '$update_name', writer = '$update_writer', 
+    category = '$update_category', details = '$update_details', price = '$update_price' WHERE id = '$update_p_id'") or die('query failed');
+
+    $update_image = $_FILES['update_image']['name'];
+    $update_image_tmp_name = $_FILES['update_image']['tmp_name'];
+    $update_image_size = $_FILES['update_image']['size'];
+    $update_folder = 'upload_img/' . $update_image;
+    $update_old_image = $_POST['update_old_image'];
+
+    if (!empty($update_image)) {
+        if ($update_image_size > 2000000) {
+            $message[] = 'image file size too large';
+        } else {
+            mysqli_query($conn, "UPDATE `tb_products` SET image = '$update_image'
+            WHERE id = '$update_p_id'") or die('query failed');
+            move_uploaded_file($update_image_tmp_name, $update_folder);
+            unlink('upload_img/' . $update_old_image);
+        }
+    }
+
+    header('location:admin_products.php');
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!---- admmin_userss.php sebelum search ----->
+<?php
+
+include('koneksi.php');
+session_start();
+
+$admin_id = $_SESSION['admin_id'];
+
+if (!isset($admin_id)) {
+    header('location:index.php');
+};
+
+// Mengecek apakah user telah memilih opsi filter
+if (isset($_GET['filter'])) {
+    $filter = $_GET['filter'];
+    $select_users = $conn->prepare("SELECT * FROM `tb_user` WHERE user_type = ?");
+    $select_users->bind_param("s", $filter);
+} else {
+    $select_users = $conn->prepare("SELECT * FROM `tb_user`");
+};
+
+$select_users->execute();
+$result_users = $select_users->get_result();
+
+if (isset($_GET['delete'])){
+    $delete_id = $_GET['delete'];
+    $delete_users = $conn->prepare("DELETE FROM `tb_user` WHERE id = ?");
+    $delete_users->bind_param("i", $delete_id);
+    $delete_users->execute();
+    header('location:admin_users.php');
+}
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>users</title>
+
+    <!-- font awesome cdn link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- custom admin css file link -->
+    <link rel="stylesheet" href="css/admin_style.css">
+
+</head>
+
+<body>
+
+    <?php include 'admin_header.php';  ?>
+
+    <section class="user-accounts">
+        <h1 class="title">user accounts</h1>
+
+        <!-- Form filter untuk memilih jenis user yang ingin ditampilkan -->
+        <form method="post" class="filter-form">
+
+            <select name="filter" class="filter">
+                <option value="" selected disabled>All Users</option>
+                <option value="user">Normal User</option>
+                <option value="admin">Admin User</option>
+            </select>
+            <!-- <button type="submit" class="option-btn">Filter</button> -->
+        </form>
+
+        <div class="box-container">
+
+            <?php
+            while ($fetch_users = $result_users->fetch_assoc()) {
+            ?>
+                <div class="box" style="<?php if ($fetch_users['id'] == $admin_id) {echo 'display:none';}; ?>">
+                    <img src="upload_img/<?= $fetch_users['image']; ?>" alt="">
+                    <p> user id : <span><?= $fetch_users['id']; ?></span></p>
+                    <p> username : <span><?= $fetch_users['name']; ?></span></p>
+                    <p> email : <span><?= $fetch_users['email']; ?></span></p>
+                    <p> user type : <span style=" color:<?php if ($fetch_users['user_type'] =='admin') {echo 'orange';}; ?>"><?= $fetch_users['user_type']; ?></span></p>
+                    <a href="admin_users.php?delete=<?= $fetch_users['id']; ?>" onclick="return confirm('delete this user?');" class="delete-btn">delete</a>
+                </div>
+            <?php
+            }
+            ?>
+        </div>
+    </section>
+
+    <!-- custom admin js file link -->
+    <script src="js/admin_script.js"></script>
+
+    <script>
+        const filterSelect = document.querySelector('.filter');
+        filterSelect.addEventListener('change', () => {
+            const filterValue = filterSelect.value;
+            window.location.href = `admin_users.php?filter=${filterValue}`;
+        });
+    </script>
+
+
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!------- Shop.php new ------->
+
+<?php
+include('koneksi.php');
+session_start();
+
+$user_id = $_SESSION['user_id'];
+
+if (!isset($user_id)) {
+    header('location:index.php');
+    exit();
+}
+
+include 'wishlist_cart.php';
+
+// Mendapatkan nilai kategori yang dipilih
+if (isset($_GET['category'])) {
+    $category = $_GET['category'];
+}
+
+$select_products = $conn->prepare("SELECT id, name, writer, details, price, image FROM tb_products");
+if (isset($category) && !empty($category)) {
+    $select_products = $conn->prepare("SELECT id, name, writer, details, price, image FROM tb_products WHERE category = ?");
+    $select_products->bind_param("s", $category);
+}
+$select_products->execute();
+$select_products->store_result();
+
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- font awesome cdn link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- custom admin css file link -->
+    <link rel="stylesheet" href="css/style.css">
+    <title>shop</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#search-bar").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $(".box-container .box").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+
+</head>
+
+<body>
+    <style>
+        #deskripsi {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+            /* Sesuaikan lebar sesuai kebutuhan */
+        }
+    </style>
+
+    <?php include 'header.php'; ?>
+
+    <section class="search-book">
+        <div class="search-bar-container">
+            <input type="text" id="search-bar" placeholder="Cari...">
+            <select id="category-dropdown" onchange="filterByCategory(this.value)">
+                <option value="">All</option>
+                <option value="Motivasi">Motivasi</option>
+                <option value="Romance">Romance</option>
+                <option value="3">Kategori 3</option>
+            </select>
+
+        </div>
+    </section>
+
+    <section class="products">
+        <h1 class="heading">latest products</h1>
+        <div class="box-container">
+            <?php
+            if (isset($select_products) && $select_products->num_rows > 0) {
+                $select_products->bind_result($product_id, $product_name, $product_writer, $product_details, $product_price, $product_image);
+                while ($select_products->fetch()) {
+            ?>
+                    <form action="" method="post" class="box">
+                        <input type="hidden" name="pid" value="<?php echo $product_id; ?>">
+                        <input type="hidden" name="name" value="<?php echo $product_name; ?>">
+                        <input type="hidden" name="price" value="<?php echo $product_price; ?>">
+                        <input type="hidden" name="image" value="<?php echo $product_image; ?>">
+                        <button class="fas fa-heart" type="submit" name="add_to_wishlist"></button>
+                        <a href="quick_view.php?pid=<?php echo $product_id; ?>" class="fas fa-eye"></a>
+                        <img src="upload_img/<?php echo $product_image; ?>" alt="">
+                        <div class="name"><?php echo $product_name; ?></div>
+                        <div class="writer"><?php echo $product_writer; ?></div>
+                        <div class="flex">
+                            <div class="price"><span>Rp</span><?php echo number_format($product_price, 0, ',', '.'); ?></div>
+                            <input type="number" name="qty" class="qty" min="1" max="99" onkeypress="if(this.value.length == 2) return false;" value="1">
+                        </div>
+                        <div class="writer" id="deskripsi"><?php echo $product_details; ?></div>
+                        <input type="submit" value="add to cart" class="btn" name="add_to_cart">
+                    </form>
+            <?php
+                }
+            } else {
+                echo '<p class="empty">no products found!</p>';
+            }
+            ?>
+        </div>
+    </section>
+
+    <?php include 'footer.php'; ?>
+
+    <!-- custom admin js file link -->
+    <script src="js/admin_script.js"></script>
+
+    <script>
+        var deskripsi = document.getElementById('deskripsi');
+        var kata = deskripsi.innerHTML.split(' ').slice(0, 10).join(' ');
+        deskripsi.innerHTML = kata + '...';
+    </script>
+
+    <script>
+        function filterByCategory(category) {
+            location.href = 'shop.php?category=' + category;
+        }
+    </script>
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+User_profile_update.php
+<input type="hidden" name="old_pass" value="<?= $fetch_profile['password']; ?>">
+                    <span>old password :</span>
+                    <input type="password" class="box" name="update_pass" placeholder="enter previous password">
+
+Admin_profile_update.php
+<input type="hidden" name="old_pass" value="<?= $fetch_profile['password']; ?>">
+                    <span>old password :</span>
+                    <input type="password" class="box" name="update_pass" placeholder="enter previous password">
+
+
+
+
+
+
+
+
+<?php
+
+include('koneksi.php');
+session_start();
+
+$user_id = $_SESSION['user_id'];
+
+if (!isset($user_id)) {
+    header('location:index.php');
+};
+
+function generateRandomString($minLength = 24, $maxLength = 50)
+{
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    $length = rand($minLength, $maxLength);
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
+}
+
+$order_id = generateRandomString();
+
+
+if (isset($_POST['order'])) {
+
+    $name = mysqli_real_escape_string($conn, $_POST['name']);
+    $sorder = mysqli_real_escape_string($conn, $_POST['sorder']);
+    $order_id = mysqli_real_escape_string($conn, $_POST['order_id']);
+    $number = $_POST['number'];
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $method = '-';
+    $address = '-';
+    $city = '';
+    $province = '';
+    $postal_code = '';
+
+    if ($sorder == 'delivery') {
+        $method = mysqli_real_escape_string($conn, $_POST['method']);
+        $address = mysqli_real_escape_string($conn, $_POST['flat'] . ', ' . $_POST['city'] .  ', ' . $_POST['state'] . ' - ' . $_POST['pin_code']);
+        $city = mysqli_real_escape_string($conn, $_POST['city']);
+        $province = mysqli_real_escape_string($conn, $_POST['state']);
+        $postal_code = mysqli_real_escape_string($conn, $_POST['pin_code']);
+    }
+
+    // Upload gambar
+    $imageName = "";
+    if (isset($_FILES['image']) && $_FILES['image']['name']) {
+        $targetDir = "upload_img/"; // Direktori tujuan penyimpanan gambar
+        $imageName = $_FILES['image']['name']; // Nama gambar yang diunggah
+        $targetFilePath = $targetDir . $imageName; // Path lengkap gambar
+
+        // Pindahkan gambar ke direktori upload_img
+        move_uploaded_file($_FILES['image']['tmp_name'], $targetFilePath);
+    }
+
+    $cart_total = 0;
+    $cart_products[] = '';
+
+    $cart_query = mysqli_query($conn, "SELECT * FROM `tb_cart` WHERE user_id = '$user_id'") or die('query failed');
+    if (mysqli_num_rows($cart_query) > 0) {
+        while ($cart_item = mysqli_fetch_assoc($cart_query)) {
+            $cart_products[] = $cart_item['name'] . ' (' . $cart_item['price'] . ' x ' . $cart_item['quantity'] . ') - ';
+            $sub_total = ($cart_item['price'] * $cart_item['quantity']);
+            $cart_total += $sub_total;
+        }
+    }
+
+    $total_products = implode(', ', $cart_products);
+
+    $order_query = mysqli_query($conn, "SELECT * FROM `tb_orders` WHERE name = '$name' AND sistem_order = '$sorder' AND number = '$number' AND email = '$email' AND method = '$method' AND address = '$address' AND total_products = '$total_products' AND total_price = '$cart_total'") or die('query failed');
+
+    if ($cart_total == 0) {
+        $message[] = 'your cart is empty';
+    } else {
+        if (mysqli_num_rows($order_query) > 0) {
+            $message[] = 'order already placed!';
+        } else {
+            mysqli_query($conn, "INSERT INTO `tb_orders` (user_id, name, order_id, sistem_order, number, email, method, address, total_products, total_price, review_image)
+            VALUES ('$user_id', '$name', '$order_id', '$sorder', '$number', '$email', '$method', '$address', '$total_products', '$cart_total', '$imageName')")
+                or die('query failed');
+            $message[] = 'order placed successfully!';
+            mysqli_query($conn, "DELETE FROM `tb_cart` WHERE user_id = '$user_id'") or die('query failed');
+        }
+    }
+} else {
+    // Cek apakah alamat tersedia dalam database
+    $address_query = mysqli_query($conn, "SELECT * FROM `tb_address` WHERE user_id = '$user_id'");
+    $has_address = mysqli_num_rows($address_query) > 0;
+
+    if (!$has_address) {
+        // Jika alamat tidak tersedia, langsung arahkan ke halaman "user_address.php"
+        header('Location: user_address.php');
+        exit;
+    } else {
+        // Jika alamat sudah terdaftar, tampilkan form checkout
+?>
+
+        <!DOCTYPE html>
+        <html lang="en">
+
+        <head>
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <!-- font awesome cdn link -->
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+            <!-- custom admin css file link -->
+            <link rel="stylesheet" href="css/style.css">
+            <title>checkout</title>
+        </head>
+
+        <body>
+
+            <?php include 'header.php'; ?>
+
+            <section class="checkout-orders">
+                <form action="" method="POST" enctype="multipart/form-data">
+                    <!-- Form checkout -->
+                    <h3>your orders</h3>
+
+                    <div class="display-orders">
+                        <?php
+                        $grand_total = 0;
+                        $select_cart = mysqli_query($conn, "SELECT * FROM `tb_cart` WHERE user_id = '$user_id'") or die('query failed');
+                        if (mysqli_num_rows($select_cart) > 0) {
+                            while ($fetch_cart = mysqli_fetch_assoc($select_cart)) {
+                                $total_price = ($fetch_cart['price'] * $fetch_cart['quantity']);
+                                $grand_total += $total_price;
+                        ?>
+                                <p><?php echo $fetch_cart['name']; ?> <span>(<?php echo 'Rp ' . number_format($fetch_cart['price'], 0, ',', '.') . '/-' . ' x ' . $fetch_cart['quantity']; ?>)</span></p>
+                        <?php
+                            }
+                        } else {
+                            echo '<p class="empty">your cart is empty</p>';
+                        }
+                        ?>
+                        <div class="grand-total"> total checkout : <span><?php echo 'Rp ' . number_format($grand_total, 0, ',', '.') . '/-' ?></span> </div>
+                    </div>
+
+                    <h3>place your orders</h3>
+
+                    <div class="flex">
+                        <div class="inputBox" id="sorder">
+                            <span>system order :</span>
+                            <select name="sorder" class="box" required onchange="toggleInputs(this.value)">
+                                <option value="delivery">delivery</option>
+                                <option value="take away">take away</option>
+                            </select>
+                        </div>
+                        <input type="hidden" name="order_id" maxlength="50" value="<?php echo $order_id; ?>">
+                        <?php
+                        $query = mysqli_query($conn, "SELECT * FROM tb_user WHERE id = $user_id");
+                        while ($data_orders = mysqli_fetch_assoc($query)) {
+                        ?>
+                            <div class="inputBox" id="nameBox">
+                                <span>your name :</span>
+                                <input type="text" name="name" value="<?= $data_orders['name']; ?>" placeholder="enter your name" class="box" required>
+                            </div>
+
+                            <div class="inputBox" id="numberBox">
+                                <span>your number :</span>
+                                <input type="number" name="number" placeholder="enter your number" class="box" min="0" max="99999999999999" onkeypress="if(this.value.length == 15) return false;" required>
+                            </div>
+
+                            <div class="inputBox" id="emailBox">
+                                <span>your email :</span>
+                                <input type="email" name="email" value="<?= $data_orders['email']; ?>" placeholder="enter your email" class="box" required>
+                            </div>
+                        <?php
+                        }
+                        ?>
+
+                        <div class="inputBox" id="methodBox">
+                            <span>payment method :</span>
+                            <select name="method" class="box" required>
+                                <option value="cash on delivery">cash on delivery</option>
+                                <option value="credit card">credit card</option>
+                                <option value="paytm">paytm</option>
+                                <option value="paypal">paypal</option>
+                            </select>
+                        </div>
+
+                        <?php
+                        $query_address = mysqli_query($conn, "SELECT * FROM tb_address WHERE user_id = $user_id");
+                        while ($data_address = mysqli_fetch_assoc($query_address)) {
+                        ?>
+                            <div class="inputBox" id="addressBox">
+                                <span>address :</span>
+                                <input type="text" name="flat" value="<?= $data_address['address']; ?>" placeholder="cth : jln KH Hasyim" class="box" maxlength="50" required>
+                            </div>
+
+                            <div class="inputBox" id="cityBox">
+                                <span>city :</span>
+                                <input type="text" name="city" value="<?= $data_address['city']; ?>" placeholder="cth : Jakarta" class="box" maxlength="50" required>
+                            </div>
+
+                            <div class="inputBox" id="stateBox">
+                                <span>province :</span>
+                                <input type="text" name="state" value="<?= $data_address['province']; ?>" placeholder="cth : Ibu Kota Jakarta" class="box" maxlength="50" required>
+                            </div>
+
+                            <div class="inputBox" id="pinCodeBox">
+                                <span>postal code :</span>
+                                <input type="number" min="0" name="pin_code" value="<?= $data_address['postal_code']; ?>" placeholder="cth : 10150" min="0" max="999999" onkeypress="if(this.value.length == 6) return false;" class="box" required>
+                            </div>
+                        <?php
+                        }
+                        ?>
+
+                        <div class="inputBox" id="imgCodeBox">
+                            <span>proof transfer :</span>
+                            <input type="file" name="image" accept="image/jpg, image/jpeg, image/png" class="box" required>
+                        </div>
+                    </div>
+
+                    <input type="submit" name="order" class="btn" value="place order">
+                </form>
+            </section>
+
+            <?php include 'footer.php'; ?>
+
+            <!-- custom admin js file link -->
+            <script src="js/admin_script.js"></script>
+
+            <script>
+                function toggleInputs(value) {
+                    var nameBox = document.getElementById("nameBox");
+                    var numberBox = document.getElementById("numberBox");
+                    var emailBox = document.getElementById("emailBox");
+                    var methodBox = document.getElementById("methodBox");
+                    var addressBox = document.getElementById("addressBox");
+                    var cityBox = document.getElementById("cityBox");
+                    var stateBox = document.getElementById("stateBox");
+                    var pinCodeBox = document.getElementById("pinCodeBox");
+                    var imgCodeBox = document.getElementById("imgCodeBox");
+
+                    var addressBox = document.getElementById('addressBox');
+                    var cityBox = document.getElementById('cityBox');
+                    var stateBox = document.getElementById('stateBox');
+                    var pinCodeBox = document.getElementById('pinCodeBox');
+                    var addAddressBox = document.getElementById('addAddressBox');
+                    var imgCodeBox = document.getElementById('imgCodeBox');
+
+                    if (value === "take away") {
+                        nameBox.style.display = "block";
+                        numberBox.style.display = "block";
+                        emailBox.style.display = "block";
+                        methodBox.style.display = "none";
+                        addressBox.style.display = "none";
+                        cityBox.style.display = "none";
+                        stateBox.style.display = "none";
+                        pinCodeBox.style.display = "none";
+                        imgCodeBox.style.display = "none";
+                        nameBox.querySelector("input").setAttribute("required", "");
+                        numberBox.querySelector("input").setAttribute("required", "");
+                        emailBox.querySelector("input").setAttribute("required", "");
+                        methodBox.querySelector("select").removeAttribute("required");
+                        addressBox.querySelector("input").removeAttribute("required");
+                        cityBox.querySelector("input").removeAttribute("required");
+                        stateBox.querySelector("input").removeAttribute("required");
+                        pinCodeBox.querySelector("input").removeAttribute("required");
+                        imgCodeBox.querySelector("input").removeAttribute("required");
+                    } else if (value === "delivery") {
+                        nameBox.style.display = "block";
+                        numberBox.style.display = "block";
+                        emailBox.style.display = "block";
+                        methodBox.style.display = "block";
+                        addressBox.style.display = "block";
+                        cityBox.style.display = "block";
+                        stateBox.style.display = "block";
+                        pinCodeBox.style.display = "block";
+                        imgCodeBox.style.display = "block";
+                        nameBox.querySelector("input").setAttribute("required", "");
+                        numberBox.querySelector("input").setAttribute("required", "");
+                        emailBox.querySelector("input").setAttribute("required", "");
+                        methodBox.querySelector("select").setAttribute("required", "");
+                        addressBox.querySelector("input").setAttribute("required", "");
+                        cityBox.querySelector("input").setAttribute("required", "");
+                        stateBox.querySelector("input").setAttribute("required", "");
+                        pinCodeBox.querySelector("input").setAttribute("required", "");
+                        imgCodeBox.querySelector("input").setAttribute("required", "");
+                    }
+                }
+            </script>
+
+        </body>
+
+        </html>
+
+<?php
+    }
+}
+?>
