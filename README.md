@@ -2,7 +2,7 @@
 
 ## Deskripsi
 
-Bookshelf adalah sebuah website e-commerce yang menjual buku buku dalam berbagai category, dibuat dengan menggunakan HTML, CSS, JS , PHP dan MySQL sehingga website berhasil dibuat sebagaimana mestinya.
+Bookshelf adalah sebuah website e-commerce yang menjual buku buku dalam berbagai category, dibuat dengan menggunakan HTML, CSS, JS , PHP dan MySQL sehingga website berhasil dibuat sebagaimana mestinya. Silahkan download file tcpdf terlebih dahulu di link berikut https://drive.google.com/drive/folders/16cReKzBwliM5oe7eIRX137U4IFtr-GaF?usp=sharing dan gabungkan file ini menjadi satu dengan yang lainnya
 
 ## Fitur
 
